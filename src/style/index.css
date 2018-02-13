@@ -1,0 +1,12 @@
+main {
+  color: white;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100vh;
+  padding-top: 64px;
+  width: 100%; }
+
+.planner-container {
+  width: 100%;
+  display: flex; }
