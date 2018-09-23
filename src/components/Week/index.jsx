@@ -1,33 +1,38 @@
 import React from 'react';
-import { withTheme } from '@material-ui/core/styles';
-import Day from '../Day';
+import PropTypes from 'prop-types';
+import { TableCell, TableRow } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import _ from 'lodash';
+
+import Event from '../Event';
+
+const styles = {};
 
 const WeekComponent = (props) => {
-  const { daysOfWeek, theme } = props;
+  const { times, data } = props;
+  const dayTimes = _.map(data, (day, key) => day.times);
 
-  const styles = {
-    week: {
-      backgroundColor: theme.palette.secondary[500],
-      display: 'flex',
-      justifyContent: 'space-around',
-      width: '100%',
-    },
-  };
-  const week = daysOfWeek.map((day, key) => {
-    return {
-      id: key,
-      day,
-      events: [],
-      weekend: day === 'Saturday' || day === 'Sunday',
-    };
-  });
-  return (
-    <div className="week" style={ styles.week }>
+  return _.map(times, (time, key) => (
+    <TableRow key={ `${key}-${time}` }>
+      <TableCell>{time.time}</TableCell>
       {
-        week.map((day) => <Day data={ day } key={ day.id } />)
+        _.map(dayTimes, (dayTime, k) => _.map(dayTime, hour => {
+          if (time.time === hour.time) {
+            return (
+              <TableCell key={ `${k}-${hour.time}` }>
+                <Event event={ hour.event } />
+              </TableCell>
+            );
+          }
+        }))
       }
-    </div>
-  );
+    </TableRow>
+  ));
 };
 
-export default withTheme()(WeekComponent);
+WeekComponent.propTypes = {
+  times: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
+};
+
+export default withStyles(styles)(WeekComponent);

@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -18,10 +16,15 @@ class Home extends Component {
     };
   }
   render () {
-    const { currentWeek } = this.state;
+    const { currentWeek, daysOfWeek } = this.state;
+    const { times } = this.props;
     return (
       <div className="planner-container">
-        <Calendar week={ currentWeek } />
+        <Calendar
+          week={ currentWeek }
+          daysOfWeek={ daysOfWeek }
+          times={ times }
+        />
       </div>
     );
   }
@@ -29,6 +32,7 @@ class Home extends Component {
 
 const mapStateToProps = (state) => ({
   currentWeek: state.week.currentWeek,
+  times: state.week.times,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({

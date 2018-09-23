@@ -6,6 +6,7 @@ const event = {
   location: '',
   invites: [],
   description: '',
+  subject: '',
 };
 const times = [
   {
@@ -126,6 +127,7 @@ const times = [
 ];
 const initialState = {
   weeks: [],
+  times,
   currentWeek: [
     {
       id: 1,

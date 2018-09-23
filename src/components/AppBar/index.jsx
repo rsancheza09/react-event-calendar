@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Tooltip } from '@material-ui/core';
-import { CalendarToday } from '@material-ui/icons';
+import { CalendarToday, AlarmAdd } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
@@ -20,6 +20,11 @@ const AppBarComponent = (props) => (
           <Tooltip title="Today">
             <IconButton>
               <CalendarToday color="inherit" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Add Event">
+            <IconButton>
+              <AlarmAdd color="inherit" />
             </IconButton>
           </Tooltip>
         </div>

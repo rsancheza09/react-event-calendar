@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Paper, Table, TableHead, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import Timer from '../../components/Timer';
-// import Week from '../../components/Week';
+import Week from '../../components/Week';
+
+const styles = {};
 const Calendar = (props) => {
-  const headers = ['Time', ...props.daysOfWeek];
+  const { daysOfWeek, times, week } = props;
+  const headers = ['Time', ...daysOfWeek];
   return (
     <Paper>
       <Table>
@@ -19,7 +21,7 @@ const Calendar = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <Timer hours={ props.hours } />
+          <Week data={ week } times={ times } />
         </TableBody>
       </Table>
     </Paper>
@@ -27,9 +29,10 @@ const Calendar = (props) => {
 };
 
 Calendar.propTypes = {
-  hours: PropTypes.array.isRequired,
+  week: PropTypes.array.isRequired,
   daysOfWeek: PropTypes.array.isRequired,
+  times: PropTypes.array.isRequired,
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles()(Calendar);
+export default withStyles(styles)(Calendar);

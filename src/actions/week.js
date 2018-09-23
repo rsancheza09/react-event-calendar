@@ -11,6 +11,7 @@ export const getCurrentWeek = () => {
         },
       });
     }
-    return getState().week.weeks.slice(-1);
+    const resp = getState().week.weeks.slice(-1);
+    return resp[0];
   };
 };
