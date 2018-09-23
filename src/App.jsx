@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { blue, lime } from '@material-ui/core/colors';
 import Home from './containers/home';
-import AppBar from './components/AppBar';
+import AppBar from './containers/AppBar';
 
 const theme = createMuiTheme({
   palette: {

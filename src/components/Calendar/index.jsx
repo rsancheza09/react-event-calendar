@@ -4,12 +4,16 @@ import { Paper, Table, TableHead, TableBody, TableCell, TableRow } from '@materi
 import { withStyles } from '@material-ui/core/styles';
 import Week from '../../components/Week';
 
-const styles = {};
+const styles = {
+  paper: {
+    width: '100%',
+  },
+};
 const Calendar = (props) => {
-  const { daysOfWeek, times, week } = props;
+  const { daysOfWeek, times, week, classes } = props;
   const headers = ['Time', ...daysOfWeek];
   return (
-    <Paper>
+    <Paper className={ classes.paper }>
       <Table>
         <TableHead>
           <TableRow>

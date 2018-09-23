@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import {
-  getCurrentWeek,
-} from '../../actions/week';
 import Calendar from '../../components/Calendar';
 
 class Home extends Component {
@@ -12,12 +8,11 @@ class Home extends Component {
     super(props);
     this.state = {
       daysOfWeek: moment.weekdays(),
-      currentWeek: props.getCurrentWeek(),
     };
   }
   render () {
-    const { currentWeek, daysOfWeek } = this.state;
-    const { times } = this.props;
+    const { daysOfWeek } = this.state;
+    const { times, currentWeek } = this.props;
     return (
       <div className="planner-container">
         <Calendar
@@ -35,11 +30,6 @@ const mapStateToProps = (state) => ({
   times: state.week.times,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getCurrentWeek,
-}, dispatch);
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(Home);
