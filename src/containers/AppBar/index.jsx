@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import autobind from 'react-autobind';
 import { bindActionCreators } from 'redux';
 import { AppBar, Toolbar, Typography, IconButton, Tooltip } from '@material-ui/core';
 import { CalendarToday, AlarmAdd } from '@material-ui/icons';
@@ -23,21 +22,23 @@ const styles = {
 class AppBarComponent extends Component {
   constructor (props) {
     super(props);
-    autobind(this);
     this.state = {
       open: false,
       currentWeek: props.getCurrentWeek(),
     };
   }
-  handleClickOpen () {
+  handleClickOpen = () => {
     this.setState({
       open: true,
     });
   }
-  handleClickClose () {
+  handleClickClose = () => {
     this.setState({
       open: false,
     });
+  }
+  handleNewEvent = (data) => {
+    console.log(data);
   }
   render () {
     return (
@@ -62,6 +63,7 @@ class AppBarComponent extends Component {
             open={ this.state.open }
             handleClose={ this.handleClickClose }
             week={ this.state.currentWeek }
+            handleNewEvent={ this.handleNewEvent }
           />
         </AppBar>
       </div>

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
+import moment from 'moment';
 import {
   Dialog,
   DialogActions,
@@ -9,8 +11,19 @@ import {
   TextField,
   InputAdornment,
   MenuItem,
+  Button,
 } from '@material-ui/core';
 import { LocationOn } from '@material-ui/icons';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = {
+  select: {
+    marginRight: '20px',
+    '&:last-child': {
+      marginRight: '0',
+    },
+  },
+};
 
 const categories = [
   {
@@ -36,6 +49,25 @@ class AddEventForm extends Component {
     description: '',
     location: '',
     category: 'meeting',
+    date: moment().format('dddd'),
+    time: '7:00',
+    subjectError: false,
+    descriptionError: false,
+    locationError: false,
+  }
+
+  resetFields = () => {
+    this.setState({
+      subject: '',
+      description: '',
+      location: '',
+      category: 'meeting',
+      date: moment().format('dddd'),
+      time: '7:00',
+      subjectError: false,
+      descriptionError: false,
+      locationError: false,
+    });
   }
 
   handleChange = name => event => {
@@ -43,13 +75,71 @@ class AddEventForm extends Component {
       [name]: event.target.value,
     });
   }
+
+  handleErrorField = ({ name, error }) => {
+    this.setState({
+      [name]: error,
+    });
+  }
+
+  handleClose = () => {
+    this.resetFields();
+    this.props.handleClose();
+  }
+  handleSave = () => {
+    const { subject, description, location } = this.state;
+    let hasError = false;
+    if (!subject) {
+      this.handleErrorField({ name: 'subjectError', error: true });
+      hasError = true;
+    } else {
+      this.handleErrorField({ name: 'subjectError', error: false });
+      hasError = false;
+    }
+    if (!description) {
+      this.handleErrorField({ name: 'descriptionError', error: true });
+      hasError = true;
+    } else {
+      this.handleErrorField({ name: 'descriptionError', error: false });
+      hasError = false;
+    }
+    if (!location) {
+      this.handleErrorField({ name: 'locationError', error: true });
+      hasError = true;
+    } else {
+      this.handleErrorField({ name: 'locationError', error: false });
+      hasError = false;
+    }
+    if (!hasError) {
+      this.props.handleNewEvent(this.state);
+      this.props.handleClose();
+    }
+  }
+  getDayList = () => _.map(this.props.week, day => {
+    return { value: day.day, label: day.day };
+  })
+  getTimeAvailable = () => {
+    let timeAvailable;
+    _.forEach(this.props.week, weekDay => {
+      if (weekDay.day === this.state.date) {
+        timeAvailable = _.map(weekDay.times, time => {
+          return {
+            value: !time.event && time.time,
+            label: !time.event && time.time,
+          };
+        });
+      }
+    });
+    return timeAvailable;
+  }
   render () {
-    const { open, handleClose, week } = this.props;
-    console.log(week);
+    const { open, classes } = this.props;
+    const days = this.getDayList();
+    const timeAvailable = this.getTimeAvailable();
     return (
       <Dialog
         open={ open }
-        onClose= { handleClose }
+        onClose= { this.handleClose }
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">Add New Event</DialogTitle>
@@ -58,6 +148,7 @@ class AddEventForm extends Component {
             Add new event information
           </DialogContentText>
           <TextField
+            error={ this.state.subjectError }
             autoFocus
             margin="dense"
             id="subject"
@@ -67,6 +158,7 @@ class AddEventForm extends Component {
             onChange={ this.handleChange('subject') }
           />
           <TextField
+            error={ this.state.descriptionError }
             margin="dense"
             id="description"
             label="Description"
@@ -77,6 +169,7 @@ class AddEventForm extends Component {
             onChange={ this.handleChange('description') }
           />
           <TextField
+            error={ this.state.locationError }
             margin="dense"
             id="location"
             label="Location"
@@ -99,6 +192,7 @@ class AddEventForm extends Component {
             onChange={ this.handleChange('category') }
             helperText="Please select a category"
             margin="normal"
+            className={ classes.select }
           >
             {categories.map(option => (
               <MenuItem key={ option.value } value={ option.value }>
@@ -106,7 +200,47 @@ class AddEventForm extends Component {
               </MenuItem>
             ))}
           </TextField>
+          <TextField
+            id="standard-select-date"
+            select
+            label="Day of Week"
+            value={ this.state.date }
+            onChange={ this.handleChange('date') }
+            helperText="Please select a day"
+            margin="normal"
+            className={ classes.select }
+          >
+            {days.map(option => (
+              <MenuItem key={ option.value } value={ option.value }>
+                { option.label }
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="standard-select-time"
+            select
+            label="Time of Day"
+            value={ this.state.time }
+            onChange={ this.handleChange('time') }
+            helperText="Please select a time"
+            margin="normal"
+            className={ classes.select }
+          >
+            {timeAvailable.map(option => (
+              <MenuItem key={ option.value } value={ option.value }>
+                { option.label }
+              </MenuItem>
+            ))}
+          </TextField>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={ this.handleClose } color="primary">
+              Cancel
+          </Button>
+          <Button onClick={ this.handleSave } color="primary">
+              Save
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }
@@ -116,6 +250,7 @@ AddEventForm.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   week: PropTypes.array.isRequired,
+  handleNewEvent: PropTypes.func.isRequired,
 };
 
-export default AddEventForm;
+export default withStyles(styles)(AddEventForm);

@@ -1,4 +1,4 @@
-# React Base #
+# Week Planner #
 
 Base project for React Projects.
 

@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 const Event = (props) => {
   return (
     <div className="event">
-      {props.event.subject || ''}
+      Event
     </div>
   );
 };
 
 Event.propTypes = {
-  event: PropTypes.object.isRequired,
+  event: PropTypes.object,
 };
 
 export default Event;

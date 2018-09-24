@@ -10,7 +10,6 @@
     "moment": "^2.22.2",
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
-    "react-autobind": "^1.0.6",
     "react-dom": "^16.4.0",
     "react-ga": "^2.5.0",
     "react-meta-tags": "^0.6.0",
