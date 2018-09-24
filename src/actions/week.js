@@ -15,3 +15,10 @@ export const getCurrentWeek = () => {
     return resp[0];
   };
 };
+
+export const setNewEvent = ({ indexOfDay, indexOfTime, event }) => {
+  return dispatch => dispatch({
+    type: ACTIONS.WEEK.SET_NEW_EVENT,
+    payload: { indexOfDay, indexOfTime, event },
+  });
+};

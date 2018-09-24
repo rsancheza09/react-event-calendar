@@ -185,6 +185,25 @@ function week (state = initialState, action) {
         ],
       };
 
+    case ACTIONS.WEEK.SET_NEW_EVENT:
+      const { indexOfDay, indexOfTime, event } = action.payload;
+      return {
+        ...state,
+        currentWeek: {
+          ...state.currentWeek,
+          [indexOfDay]: {
+            ...state.currentWeek[indexOfDay],
+            times: {
+              ...state.currentWeek[indexOfDay].times,
+              [indexOfTime]: {
+                ...state.currentWeek[indexOfDay].times[indexOfTime],
+                event,
+              },
+            },
+          },
+        },
+      };
+
     default:
       return state;
   }

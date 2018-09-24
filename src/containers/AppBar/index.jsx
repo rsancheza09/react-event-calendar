@@ -4,9 +4,11 @@ import { AppBar, Toolbar, Typography, IconButton, Tooltip } from '@material-ui/c
 import { CalendarToday, AlarmAdd } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import _ from 'lodash';
 
 import {
   getCurrentWeek,
+  setNewEvent,
 } from '../../actions/week';
 
 import AddEventForm from '../../components/AddEventForm';
@@ -38,7 +40,20 @@ class AppBarComponent extends Component {
     });
   }
   handleNewEvent = (data) => {
-    console.log(data);
+    const { subject, description, category, time, date, location } = data;
+    const indexOfDay = this.state.currentWeek.map(e => e.day).indexOf(date);
+    const indexOfTime = this.state.currentWeek[indexOfDay].times.map(e => e.time).indexOf(time);
+    const event = {
+      subject,
+      description,
+      category,
+      location,
+    };
+    this.props.setNewEvent({
+      indexOfDay,
+      indexOfTime,
+      event,
+    });
   }
   render () {
     return (
@@ -77,6 +92,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   getCurrentWeek,
+  setNewEvent,
 }, dispatch);
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AppBarComponent));
